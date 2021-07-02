@@ -19,8 +19,10 @@ public class automationpractice {
 	//	a.register();
 		// Assert.assertTrue(a.verifyEmail());
 	//	a.login();
-		a.buy();
-	//	a.hover();
+	//	a.buy();
+	//   a.searchProduct();
+	//	a.getAllPageLinks();
+		a.getBrokenLinks();
 	}
 
 	@BeforeTest
@@ -31,7 +33,7 @@ public class automationpractice {
 	@AfterTest
 	public void afterTest() {
 //		System.out.println("After test");
-		// g.close();
+
 	}
 
 }

@@ -3,13 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.automationpractice.automationpractice">
+      <class name="com.automationpractice.annotationsPractice">
         <methods>
-          <include name="beforeTest"/>
-          <include name="automationpracticeTest"/>
-          <include name="afterTest"/>
+          <include name="login"/>
+          <include name="register"/>
+          <include name="buy"/>
+          <include name="close"/>
         </methods>
-      </class> <!-- com.automationpractice.automationpractice -->
+      </class> <!-- com.automationpractice.annotationsPractice -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

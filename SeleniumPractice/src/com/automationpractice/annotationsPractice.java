@@ -18,18 +18,27 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.Test;
+
 
 import utils.GenericExecutor;
 
-public class automationpracticeMethods {
-
-	String username = "somerandommail" + (int) Math.random() * 10 + "@gmail.com";
+public class annotationsPractice {
+	static GenericExecutor g = new GenericExecutor();
+	String URL="http://automationpractice.com/index.php";
+	WebDriverWait wait = new WebDriverWait(g.getDriver(), 30);
+	automationpracticeMethods a = new automationpracticeMethods();
+	Actions actions = new Actions(g.getDriver());
+	String homePage = "http://automationpractice.com/index.php";
+	String username = "somerandommail" + Math.random() * 1000 + "@gmail.com";
 	String pass = "Password12345";
 
-	public void register() throws InterruptedException {
-		GenericExecutor g = new GenericExecutor();
-
-		g.loadURL("http://automationpractice.com/");
+	@Test
+	public void register() throws InterruptedException {	
+		 Reporter.log("Register start");
+		g.getDriver().get(URL);
 		g.getDriver().findElement(By.linkText("Sign in")).click();
 		g.getDriver().findElement(By.id("email_create")).sendKeys(username);
 		g.getDriver().findElement(By.id("SubmitCreate")).click();
@@ -75,10 +84,7 @@ public class automationpracticeMethods {
 	}
 
 	public boolean verifyEmail() throws InterruptedException {
-		GenericExecutor g = new GenericExecutor();
-
-		WebDriverWait wait = new WebDriverWait(g.getDriver(), 30);
-		g.loadURL("http://automationpractice.com/");
+		
 		g.getDriver().findElement(By.linkText("Sign in")).click();
 		g.getDriver().findElement(By.id("email_create")).sendKeys("somerandommail" + Math.random() * 10);
 		g.getDriver().findElement(By.id("SubmitCreate")).click();
@@ -99,18 +105,9 @@ public class automationpracticeMethods {
 		osw.write(pass);
 		osw.close();
 	}
-
+	
+	@Test(dependsOnMethods = { "register", "login"})
 	public void buy() throws InterruptedException {
-		GenericExecutor g = new GenericExecutor();
-
-		WebDriverWait wait = new WebDriverWait(g.getDriver(), 30);
-		automationpracticeMethods a = new automationpracticeMethods();
-		g.loadURL("http://automationpractice.com/");
-		g.getDriver().findElement(By.linkText("Sign in")).click();
-		g.getDriver().findElement(By.id("email")).sendKeys("somerandommail0@gmail.com");
-		g.getDriver().findElement(By.id("passwd")).sendKeys(pass);
-		g.getDriver().findElement(By.id("SubmitLogin")).click();
-
 		Actions actions = new Actions(g.getDriver());
 		WebElement target = g.getDriver().findElement(
 				By.xpath("/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/div[1]/div[6]/ul[1]/li[1]/a[1]"));
@@ -156,12 +153,20 @@ public class automationpracticeMethods {
 
 	}
 
+	
+	
+	@Test(dependsOnMethods = { "register"})
+	public void login () {
+		
+		g.getDriver().get(URL);
+		g.getDriver().findElement(By.linkText("Sign in")).click();
+		g.getDriver().findElement(By.id("email")).sendKeys(username);
+		g.getDriver().findElement(By.id("passwd")).sendKeys(pass);
+		g.getDriver().findElement(By.id("SubmitLogin")).click();
+	}
+	
+	@Test
 	public void searchProduct() {
-
-		GenericExecutor g = new GenericExecutor();
-
-		g.loadURL("http://automationpractice.com/");
-		Actions actions = new Actions(g.getDriver());
 		WebElement target = g.getDriver().findElement(
 				By.xpath("/html[1]/body[1]/div[1]/div[1]/header[1]/div[3]/div[1]/div[1]/div[6]/ul[1]/li[1]/a[1]"));
 		Action mouseOverHome = actions.moveToElement(target).build();
@@ -181,17 +186,14 @@ public class automationpracticeMethods {
 
 	public void getAllPageLinks() {
 
-		GenericExecutor g = new GenericExecutor();
-		g.loadURL("http://automationpractice.com/");
 		List<WebElement> allLinks = g.getDriver().findElements(By.tagName("a"));
 		for (WebElement link : allLinks) {
 			System.out.println(link.getText() + " - " + link.getAttribute("href"));
 		}
 	}
 
-	public void getBrokenLinks() {
-		GenericExecutor g = new GenericExecutor();
-		String homePage = "http://automationpractice.com/index.php";
+	public void getBrokenLinks() { 
+		
 		String url = "";
 		HttpURLConnection huc = null;
 		int respCode = 200;
@@ -243,5 +245,18 @@ public class automationpracticeMethods {
 				e.printStackTrace();
 			}
 		}
+	}
+
+
+	public static void main(String[] args) throws InterruptedException {
+		annotationsPractice ap= new annotationsPractice();
+		
+	//	ap.register();
+	//	ap.login();
+		
+	}
+	@AfterTest
+	public void close() {
+		g.getDriver().close();
 	}
 }
